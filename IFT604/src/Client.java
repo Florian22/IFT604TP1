@@ -1,27 +1,17 @@
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
+import java.net.*;
 
 public class Client {
-	
-	public static void main(String[] zero) {
+
+	public static void main(String[] zero){
 		
 		Socket socket;
-
 		try {
-		
-		     socket = new Socket(InetAddress.getLocalHost(),2015);	
-	             socket.close();
-
-		}catch (UnknownHostException e) {
-			
-			e.printStackTrace();
-		}catch (IOException e) {
+		socket = new Socket("localhost",2015);
+		socket.close();
+		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
 	}
-
 }
