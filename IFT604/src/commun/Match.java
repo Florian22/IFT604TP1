@@ -38,6 +38,11 @@ public class Match {
     	double liberation = Double.max(0.0, chronometre - minutes);
     	penalitesA.add(new Penalite(joueur, liberation));
     }
+    
+    public void penaliteEquipeB(String joueur, int minutes){
+    	double liberation = Double.max(0.0, chronometre - minutes);
+    	penalitesB.add(new Penalite(joueur, liberation));
+    }
 
 	public int getId() {
 		return id;
@@ -45,6 +50,77 @@ public class Match {
 	
 	public String toString(){
 		return equipeA + " VS " + equipeB;
-		
 	}
+
+	public String getEquipeA() {
+		return equipeA;
+	}
+
+	public void setEquipeA(String equipeA) {
+		this.equipeA = equipeA;
+	}
+
+	public String getEquipeB() {
+		return equipeB;
+	}
+
+	public void setEquipeB(String equipeB) {
+		this.equipeB = equipeB;
+	}
+
+	public int getPeriode() {
+		return periode;
+	}
+
+	public void setPeriode(int periode) {
+		this.periode = periode;
+	}
+
+	public Double getChronometre() {
+		return chronometre;
+	}
+
+	public void setChronometre(Double chronometre) {
+		this.chronometre = chronometre;
+	}
+
+	public List<String> getCompteursA() {
+		return compteursA;
+	}
+
+	public void setCompteursA(List<String> compteursA) {
+		this.compteursA = compteursA;
+	}
+
+	public List<String> getCompteursB() {
+		return compteursB;
+	}
+
+	public void setCompteursB(List<String> compteursB) {
+		this.compteursB = compteursB;
+	}
+
+	public List<Penalite> getPenalitesA() {
+		return penalitesA;
+	}
+
+	public void setPenalitesA(List<Penalite> penalitesA) {
+		this.penalitesA = penalitesA;
+	}
+
+	public List<Penalite> getPenalitesB() {
+		return penalitesB;
+	}
+
+	public void setPenalitesB(List<Penalite> penalitesB) {
+		this.penalitesB = penalitesB;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	
+	
+	
 }

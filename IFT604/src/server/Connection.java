@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.Map;
 
 import commun.Marshallizer;
+import commun.Match;
 import commun.Message;
 import commun.Message.Method;
 
@@ -38,21 +39,24 @@ public class Connection implements Runnable {
 		Message m;
 		try {
 			while ((m = (Message) ois.readObject()) != null) {
+				int noRequete = m.getNumero();
+				Message reply = new Message(noRequete, Method.Reply);
 				System.out.println("No de requete : " + m.getNumero());
 				switch (m.getMethod()) {
 				case ListeMatchs:
 					System.out.println("Liste match!!");
 					Map<Integer, String> matchs = lnh.getMatchList();
-					Message reply = new Message(m.getNumero(), Method.Reply);
 					reply.addArgument(matchs);
 					sendMessage(reply);
 					break;
 
 				case DetailsMatch:
 					System.out.println("Detail match!!");
-					System.out.println("Args :");
-					for(Object o : m.getArgument())
-						System.out.println(o.toString());
+					Integer matchNumber = (Integer)m.getArgument().get(0);
+					System.out.println("match number : " + matchNumber);
+					Match match = lnh.getMatchDetails(matchNumber);
+					reply.addArgument(match);
+					sendMessage(reply);
 					break;
 
 				default:

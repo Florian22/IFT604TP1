@@ -14,6 +14,10 @@ public class Message implements Serializable {
 		this.argument = new ArrayList<Object>();
 	}
 
+	public Message(Method method){
+		this.method = method;
+		this.argument = new ArrayList<Object>();
+	}
 
 
 	public enum Method {

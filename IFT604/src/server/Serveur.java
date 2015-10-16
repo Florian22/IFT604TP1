@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import commun.Marshallizer;
 import commun.Match;
@@ -30,13 +32,15 @@ public class Serveur {
 		
 		//
 		ServerSocket listenSocket;
+		ExecutorService executor = Executors.newFixedThreadPool(20);// Thread pool
+
 		try {
 			listenSocket = new ServerSocket(2015);
 			System.out.println("Server Online");
 			while (true) {
 				Socket clientSocket = listenSocket.accept();
 				Connection c = new Connection(clientSocket, lnh);
-				new Thread(c).start();
+				executor.execute(c);
 			}
 
 		} catch (IOException e) {
