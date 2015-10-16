@@ -55,7 +55,7 @@ public class MatchFollower implements Runnable {
 
 			// Sleep
 			try {
-				Thread.sleep(2 * 60000);
+				Thread.sleep(5000);//2 * 60000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

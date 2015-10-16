@@ -75,6 +75,7 @@ public class Connection implements Runnable {
 	}
 	
 	private void sendMessage(Message m) throws IOException{
+		oos.reset();
 		oos.writeObject(m);
 		oos.flush();
 	}

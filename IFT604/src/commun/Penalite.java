@@ -1,8 +1,9 @@
 package commun;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Penalite {
+public class Penalite implements Serializable {
     public String joueur;
     public Double chronometreLiberation;
     

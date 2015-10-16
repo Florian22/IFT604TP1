@@ -14,7 +14,7 @@ public class LNH {
     public LNH() {
     	matchs = new HashMap<Integer, Match>();
     	chronoUpdater = new Thread(new ChronoUpdater(this));
-    	matchUpdater = new Thread(new ChronoUpdater(this));
+    	matchUpdater = new Thread(new MatchUpdater(this));
     	chronoUpdater.start();
     	matchUpdater.start();
 	}
@@ -49,12 +49,14 @@ public class LNH {
 				for(Match m : lnh.matchs.values()){
 					m.setChronometre(m.getChronometre() - 0.5);
 					// Gestion des penalités
-					for (int i = m.getPenalitesA().size()-1; i >= 0; i--)
-						if(m.getPenalitesA().get(i).chronometreLiberation >= m.getChronometre())
-							m.getPenalitesA().remove(i);
-					for (int i = m.getPenalitesB().size()-1; i >= 0; i--)
-						if(m.getPenalitesB().get(i).chronometreLiberation >= m.getChronometre())
-							m.getPenalitesB().remove(i);
+					if(m.getPenalitesA().size() != 0)
+						for (int i = m.getPenalitesA().size()-1; i >= 0; i--)
+							if(m.getPenalitesA().get(i).chronometreLiberation >= m.getChronometre())
+								m.getPenalitesA().remove(i);
+					if(m.getPenalitesB().size() != 0)
+						for (int i = m.getPenalitesB().size()-1; i >= 0; i--)
+							if(m.getPenalitesB().get(i).chronometreLiberation >= m.getChronometre())
+								m.getPenalitesB().remove(i);
 					// Gestion des périodes
 					if(m.getChronometre() <= 0){
 						m.setChronometre(20.0);
@@ -83,7 +85,7 @@ public class LNH {
 			while(true){
 				for(Match m : lnh.matchs.values()){
 					// Generation aleatoire d'evenemnts
-					Integer event = randomRange(0, 80);
+					Integer event = randomRange(0, 20);
 					if(event == 0) // Equipe A score
 						m.scoreEquipeA("Dat name");
 					else if(event == 1) // Equipe B score

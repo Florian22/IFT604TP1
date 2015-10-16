@@ -1,9 +1,10 @@
 package commun;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Match {
+public class Match implements Serializable {
 	private int id;
 	private String equipeA;
     private String equipeB;
