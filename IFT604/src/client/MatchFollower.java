@@ -24,27 +24,8 @@ public class MatchFollower implements Runnable {
 		while (true) {
 			Message m = new Message(Method.DetailsMatch);
 			m.addArgument(matchId);
-			// Results
-			Message reponse;
 			try {
-				reponse = cc.executeRequest(m);
-				match = (Match) reponse.getArgument().get(0);
-
-				// Debug
-				Match match = (Match) reponse.getArgument().get(0);
-				System.out.println("Periode : " + match.getPeriode());
-				System.out.println("Chrono : " + match.getChronometre());
-				System.out.println("Score : " + match.getCompteursA().size() + "-" + match.getCompteursB().size());
-				for (String s : match.getCompteursA())
-					System.out.println("Scoreur equipe A : " + s);
-				for (String s : match.getCompteursB())
-					System.out.println("Scoreur equipe B : " + s);
-				for (Penalite p : match.getPenalitesA())
-					System.out.println("Penalite equipe A : " + p.joueur + " | "
-							+ (match.getChronometre() - p.chronometreLiberation));
-				for (Penalite p : match.getPenalitesB())
-					System.out.println("Penalite equipe B : " + p.joueur + " | "
-							+ (match.getChronometre() - p.chronometreLiberation));
+				cc.sendMessage(m);
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

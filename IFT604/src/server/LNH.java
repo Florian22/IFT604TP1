@@ -1,18 +1,23 @@
 package server;
 
-import commun.Match;
-import commun.Penalite;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import commun.Match;
 
 public class LNH {
     private Map<Integer, Match> matchs;
+    private Map<Integer, Thread> threadGestionnairesDePari;
+    private Map<Integer, MatchBetManager> gestionnairesDePari;
     Thread chronoUpdater;
     Thread matchUpdater;
     
     public LNH() {
     	matchs = new HashMap<Integer, Match>();
+    	threadGestionnairesDePari = new HashMap<Integer, Thread>();
+    	gestionnairesDePari = new HashMap<Integer, MatchBetManager>();
     	chronoUpdater = new Thread(new ChronoUpdater(this));
     	matchUpdater = new Thread(new MatchUpdater(this));
     	chronoUpdater.start();
@@ -20,8 +25,15 @@ public class LNH {
 	}
 
 	public void startMatch(Match m){
-		if(matchs.values().size() < 10)
+		if(matchs.values().size() < 10){
+			MatchBetManager mbm = new MatchBetManager(m);
+			Thread tmbm = new Thread(mbm);
+			tmbm.start();
+			
 			matchs.put(m.getId(), m);
+			gestionnairesDePari.put(m.getId(), mbm);
+			threadGestionnairesDePari.put(m.getId(), tmbm);
+		}
     }
 
 	public Map<Integer, String> getMatchList() {
@@ -34,8 +46,24 @@ public class LNH {
 	public Match getMatchDetails(Integer matchId) {
 		return matchs.get(matchId);
 	}
+
+	public MatchBetManager getGestionnaireDePari(Integer matchId) {
+		return gestionnairesDePari.get(matchId);
+	}
 	
 	public void endMatch(Integer matchId){
+		// Obtenir les objets
+		Match m = matchs.get(matchId);
+		MatchBetManager mbm = gestionnairesDePari.get(matchId);
+		Thread tmbm = threadGestionnairesDePari.get(matchId);
+		// Retirer les objets des collections
+		matchs.remove(matchId);
+		gestionnairesDePari.remove(matchId);
+		threadGestionnairesDePari.remove(matchId);
+		// Arreter le thread des paris
+		tmbm.stop();
+		// Calculer et envoyer les messages de paris
+		mbm.finalizeGame();
 		
 	}
 	
@@ -47,7 +75,7 @@ public class LNH {
 		public void run() {
 			while(true){
 				for(Match m : lnh.matchs.values()){
-					m.setChronometre(m.getChronometre() - 0.5);
+					m.setChronometre(m.getChronometre() - 11);//0.5);
 					// Gestion des penalités
 					if(m.getPenalitesA().size() != 0)
 						for (int i = m.getPenalitesA().size()-1; i >= 0; i--)
@@ -85,7 +113,7 @@ public class LNH {
 			while(true){
 				for(Match m : lnh.matchs.values()){
 					// Generation aleatoire d'evenemnts
-					Integer event = randomRange(0, 20);
+					Integer event = randomRange(0, 40);
 					if(event == 0) // Equipe A score
 						m.scoreEquipeA("Dat name");
 					else if(event == 1) // Equipe B score

@@ -21,7 +21,7 @@ public class Message implements Serializable {
 
 
 	public enum Method {
-		Reply, ListeMatchs, DetailsMatch, Parier
+		ReplyListeMatchs, ReplyDetailsMatch, ListeMatchs, DetailsMatch, Parier, ConfirmationPari, RefusPari, ResultatPari
 	}
 
 	public Method getMethod() {

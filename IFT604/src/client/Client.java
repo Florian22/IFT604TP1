@@ -19,11 +19,8 @@ public class Client {
 			// Liste des matchs
 			Message m = new Message(Method.ListeMatchs);
 			// Results
-			Message reponse = cc.executeRequest(m);
-			HashMap<Integer, String> matchs = (HashMap<Integer, String>) reponse.getArgument().get(0);
-			for (Map.Entry<Integer, String> entry : matchs.entrySet()) {
-			    System.out.println("Match no " + entry.getKey() + " : " + entry.getValue());
-			}
+			cc.sendMessage(m);
+			
 			
 			// Follow match 2
 			MatchFollower matchFollower = new MatchFollower(2, cc);
@@ -32,7 +29,11 @@ public class Client {
 			
 					
 			// TODO parie en ligne
-			
+			m = new Message(Method.Parier);
+			m.addArgument(2);// numero de match
+			m.addArgument(60);//60$
+			m.addArgument(true);//Equipe A : 1  | Equipe B : 0
+			cc.sendMessage(m);
 			
 		} catch (IOException e) {
 			
