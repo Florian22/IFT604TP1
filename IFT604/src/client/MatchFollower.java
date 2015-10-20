@@ -30,16 +30,14 @@ public class MatchFollower implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				return;
 			}
 
 			// Sleep
 			try {
 				Thread.sleep(5000);//2 * 60000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return;
 			}
 		}
 	}

@@ -64,19 +64,23 @@ public class ClientConnection {
 
 						case ReplyDetailsMatch:
 							Match match = (Match) m.getArgument().get(0);
-							System.out.println("Periode : " + match.getPeriode());
-							System.out.println("Chrono : " + match.getChronometre());
+							if(match.getPeriode() == 4)
+								System.out.println("Match terminé");
+							else{
+								System.out.println("Periode : " + match.getPeriode());
+								System.out.println("Chrono : " + match.getChronometre());
+								for (Penalite p : match.getPenalitesA())
+									System.out.println("Penalite equipe A : " + p.joueur + " | "
+											+ (match.getChronometre() - p.chronometreLiberation));
+								for (Penalite p : match.getPenalitesB())
+									System.out.println("Penalite equipe B : " + p.joueur + " | "
+											+ (match.getChronometre() - p.chronometreLiberation));
+							}
 							System.out.println("Score : " + match.getCompteursA().size() + "-" + match.getCompteursB().size());
 							for (String s : match.getCompteursA())
 								System.out.println("Scoreur equipe A : " + s);
 							for (String s : match.getCompteursB())
 								System.out.println("Scoreur equipe B : " + s);
-							for (Penalite p : match.getPenalitesA())
-								System.out.println("Penalite equipe A : " + p.joueur + " | "
-										+ (match.getChronometre() - p.chronometreLiberation));
-							for (Penalite p : match.getPenalitesB())
-								System.out.println("Penalite equipe B : " + p.joueur + " | "
-										+ (match.getChronometre() - p.chronometreLiberation));
 							break;
 
 						case RefusPari:
@@ -88,8 +92,13 @@ public class ClientConnection {
 							break;
 
 						case ResultatPari:
-							System.out.println("Vous avez gagné : " + m.getArgument().get(0));
-							break;
+							Double gain = (Double)m.getArgument().get(0);
+							if(gain == 0)
+								System.out.println("Vous avez perdu");
+							else
+								System.out.println("Vous avez gagné : " + gain);
+							Client.endMatch();
+							return;
 
 						default:
 							break;

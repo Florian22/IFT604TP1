@@ -33,7 +33,7 @@ public class MatchBetManager implements Runnable {
 					montantTotal += pari.montant;
 					parisEnregistres.add(pari);
 					pari.connection.sendMessage(new Message(Method.ConfirmationPari));
-					System.out.println("Pari accepté");
+					System.out.println("Pari accepté de " + pari.montant + " pour l'equipe " + (pari.equipeA ? "A" : "B"));
 				}
 				else{
 					pari.connection.sendMessage(new Message(Method.RefusPari));
@@ -41,8 +41,7 @@ public class MatchBetManager implements Runnable {
 				}
 				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,7 +65,11 @@ public class MatchBetManager implements Runnable {
 		Message m;
 		for(Bet b : parisEnregistres){
 			m = new Message(Method.ResultatPari);
-			Double gain = redistribution * b.montant / miseTotaleGagnants;
+			Double gain;
+			if(b.equipeA == victoireEquipeA || egalite)
+				gain = redistribution * b.montant / miseTotaleGagnants;
+			else
+				gain = 0.0;
 			m.addArgument(gain);
 			try {
 				b.connection.sendMessage(m);

@@ -12,9 +12,11 @@ import commun.Message.Method;
 import commun.Penalite;
 
 public class Client {
+		static Thread tmf;
+		static ClientConnection cc;
 
-	public static void main(String[] zero) throws ClassNotFoundException, IOException{
-		ClientConnection cc = new ClientConnection("localhost",2015);
+	public static void main(String[] zero) throws ClassNotFoundException, IOException, InterruptedException{
+		 cc = new ClientConnection("localhost",2015);
 		try {			
 			// Liste des matchs
 			Message m = new Message(Method.ListeMatchs);
@@ -24,20 +26,24 @@ public class Client {
 			
 			// Follow match 2
 			MatchFollower matchFollower = new MatchFollower(2, cc);
-			Thread tmf = new Thread(matchFollower);
+			tmf = new Thread(matchFollower);
 			tmf.start();
-			
-					
-			// TODO parie en ligne
+			// Pari en ligne
 			m = new Message(Method.Parier);
 			m.addArgument(2);// numero de match
 			m.addArgument(60);//60$
 			m.addArgument(true);//Equipe A : 1  | Equipe B : 0
 			cc.sendMessage(m);
 			
+			tmf.join();
+			
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
+	}
+	
+	public static void endMatch(){
+		tmf.interrupt();
 	}
 }

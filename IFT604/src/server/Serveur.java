@@ -32,7 +32,7 @@ public class Serveur {
 		
 		//
 		ServerSocket listenSocket;
-		ExecutorService executor = Executors.newFixedThreadPool(20);// Thread pool
+		ExecutorService executor = Executors.newFixedThreadPool(200000);// Thread pool
 
 		try {
 			listenSocket = new ServerSocket(2015);
